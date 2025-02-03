@@ -4,6 +4,7 @@ using OOP_Assignment4.Notification_Project;
 using OOP_Assignment4.Point_Project;
 using OOP_Assignment4.Security_Module;
 using OOP_Assignment4.Shape_Project;
+using OOP_Assignment4.Third_Project;
 
 
 namespace OOP_Assignment4
@@ -139,6 +140,72 @@ namespace OOP_Assignment4
 
             #region third Project
 
+            User user = null; 
+            string userType;
+            bool flag;
+            do
+            {
+                Console.Write("Enter user type (Regular, Premium, Guest): ");
+                userType = Console.ReadLine().Trim().ToLower();
+                if (string.IsNullOrEmpty(userType) || userType.Any(ch => !char.IsLetter(ch)))
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid user type (Regular, Premium, Guest).");
+                    continue;
+                }
+                if (userType == "regular")
+                {
+                    user = new RegularUser();
+                    break;
+                }
+                else if (userType == "premium")
+                {
+                    user = new PremiumUser();
+                    break;
+                }
+                else if(userType =="guest")
+                {
+                    user = new GuestUser();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter one of the following: Regular, Premium, Guest.");
+                    break;
+                }
+
+            } while (true);
+
+            if (user == null)
+            {
+                Console.WriteLine(" User type is null , it is not assigned correctly");
+                return;
+            }
+
+            bool f2,f3;
+            decimal price;
+            int quantity;
+            do
+            {
+                Console.Write("Enter product price: ");
+
+                f2 = decimal.TryParse(Console.ReadLine(), out price);
+            } while (!f2);
+
+            do
+            {
+                Console.Write("Enter product quantity: ");
+
+                f3 = int.TryParse(Console.ReadLine(), out quantity);
+            } while (!f3);
+
+            Discount discount = user.GetDiscount();
+            decimal distAmount = discount != null ? discount.CalcDiscount(price, quantity) : 0;
+            decimal finalPrice = (price * quantity) - distAmount;
+
+            Console.WriteLine($"user Type: {user.Name}");
+            Console.WriteLine($"discount Applied: {(discount != null ? discount.Name : "there is no Discount")}");
+            Console.WriteLine($"total Discount: ${distAmount}");
+            Console.WriteLine($"final Price: ${finalPrice}");
             #endregion
         }
     }
